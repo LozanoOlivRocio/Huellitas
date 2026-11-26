@@ -1,0 +1,24 @@
+# Configuración privada
+**/.env
+**/.env.*
+!**/.env.example
+**/.local/
+
+# Dependencias
+**/node_modules/
+**/.venv/
+
+# Compilaciones y cachés
+**/dist/
+**/.angular/
+**/__pycache__/
+**/.pytest_cache/
+**/coverage/
+*.pyc
+*.log
+
+# Archivos físicos y respaldos de bases de datos
+*.mdf
+*.ldf
+*.bak
+Add-Content -LiteralPath ".\.gitignore" -Value "`n**/.git-respaldo/"

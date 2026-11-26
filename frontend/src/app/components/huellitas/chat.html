@@ -1,0 +1,156 @@
+<div class="wrap messages-page">
+  <a routerLink="/mi-perfil" class="back-link"><h-icon name="back" /> Volver a mis solicitudes</a>
+  @if (!store.user()) {
+    <section class="empty-state">
+      <h-icon name="chat" />
+      <h1>Las buenas historias empiezan conversando</h1>
+      <p>Inicia sesión para ver tus mensajes.</p>
+      <a class="btn btn-green" routerLink="/login" [queryParams]="{ volver: '/mensajes' }"
+        >Iniciar sesión</a
+      >
+    </section>
+  } @else {
+    <div class="page-intro left">
+      <span class="overline">CADA PASO, MÁS CERCA</span>
+      <h1>Mensajes y solicitudes</h1>
+      <p>Un espacio para conocerse y coordinar una adopción responsable.</p>
+    </div>
+    @if (active(); as r) {
+      <section class="request-banner" [class.accepted]="r.estado === 'aceptada'">
+        <h-icon name="shield" />
+        <div>
+          <span>{{
+            r.estado === 'aceptada'
+              ? 'Solicitud aceptada'
+              : r.estado === 'pendiente'
+                ? 'Solicitud enviada · Pendiente de revisión'
+                : r.estado === 'rechazada'
+                  ? 'Solicitud rechazada'
+                  : 'Solicitud cancelada'
+          }}</span>
+          <h2>
+            {{
+              r.estado === 'aceptada'
+                ? '¡Un nuevo comienzo para ' + pet(r.petId)?.nombre + '!'
+                : r.estado === 'pendiente'
+                  ? 'El primer paso ya está dado.'
+                  : 'Esta solicitud ha finalizado.'
+            }}
+          </h2>
+          <p>
+            {{
+              r.estado === 'pendiente'
+                ? 'El publicador debe revisar tu solicitud. Puedes usar el chat para compartir dudas y coordinar los siguientes pasos.'
+                : r.estado === 'aceptada'
+                  ? 'Coordinen los detalles de la bienvenida y sus cuidados.'
+                  : 'Puedes seguir explorando compañeros que buscan hogar.'
+            }}
+          </p>
+        </div>
+      </section>
+    }
+    <div class="chat-layout">
+      <aside class="chat-list">
+        <h2>
+          Conversaciones <span class="count">{{ conversations().length }}</span>
+        </h2>
+        @for (r of conversations(); track r.id) {
+          <a [routerLink]="['/mensajes', r.id]" [class.active]="active()?.id === r.id"
+            ><img [src]="pet(r.petId)?.foto" [alt]="pet(r.petId)?.nombre" />
+            <div>
+              <strong>{{ pet(r.petId)?.nombre }}</strong
+              ><small>{{
+                r.userId === store.user()?.id ? 'Consulta de adopción' : r.nombre
+              }}</small>
+              <p>{{ r.mensajes.at(-1)?.contenido || 'Inicia la conversación' }}</p>
+            </div></a
+          >
+        } @empty {
+          <div class="empty-state compact">
+            <h-icon name="chat" />
+            <p>Los chats aparecerán después de enviar o recibir una solicitud.</p>
+            <a routerLink="/" class="text-link">Explorar mascotas</a>
+          </div>
+        }
+      </aside>
+      <section class="chat-window">
+        @if (active(); as r) {
+          <header class="chat-header">
+            <div class="avatar"><h-icon name="paw" /></div>
+            <div>
+              <h2>{{ pet(r.petId)?.nombre }}</h2>
+              <small>{{
+                r.userId === store.user()?.id
+                  ? 'Conversación con el publicador'
+                  : 'Conversación con ' + r.nombre
+              }}</small>
+            </div>
+            <a class="btn btn-outline" [routerLink]="['/mascotas', r.petId]">Ver ficha</a>
+          </header>
+          <div
+            class="chat-body"
+            aria-live="polite"
+            role="log"
+            aria-label="Mensajes de la solicitud"
+          >
+            <div class="chat-system">
+              <h-icon name="shield" /> Comparte dudas y acuerda los próximos pasos con calma.
+            </div>
+            @for (m of r.mensajes; track m.id) {
+              <article class="bubble" [class.own]="m.sender === store.user()?.id">
+                <span>{{
+                  m.sender === store.user()?.id
+                    ? 'Tú'
+                    : r.userId === m.sender
+                      ? r.nombre
+                      : 'Publicador'
+                }}</span>
+                <p>{{ m.contenido }}</p>
+                <time>{{ m.fecha | date: 'dd/MM HH:mm' }}</time>
+              </article>
+            } @empty {
+              <div class="empty-state compact">
+                <h-icon name="chat" />
+                <h3>Saluda y empieza a conocerse</h3>
+                <p>Todavía no hay mensajes. No se envían respuestas automáticas.</p>
+              </div>
+            }
+          </div>
+          @if (r.estado === 'pendiente' || r.estado === 'aceptada') {
+            <form class="chat-compose" (ngSubmit)="send()">
+              <input
+                class="form-control"
+                aria-label="Escribe un mensaje"
+                name="message"
+                [(ngModel)]="message"
+                required
+                maxlength="2000"
+                placeholder="Escribe un mensaje…"
+              /><button type="submit" class="btn btn-green" [disabled]="!message.trim() || busy()">
+                Enviar <h-icon name="send" />
+              </button>
+            </form>
+          } @else {
+            <p class="chat-system">Esta conversación está cerrada.</p>
+          }
+          @if (error()) {
+            <p class="alert error" role="alert">{{ error() }}</p>
+          }
+        } @else {
+          <div class="empty-state">
+            <h-icon name="chat" />
+            <h2>
+              {{
+                invalidId()
+                  ? 'No encontramos esta conversación'
+                  : 'Tus conversaciones, en un solo lugar'
+              }}
+            </h2>
+            <p>Selecciona una solicitud para ver sus mensajes.</p>
+          </div>
+        }
+      </section>
+    </div>
+    <p class="demo-note">Los mensajes se actualizan automáticamente cada 5 segundos.</p>
+  }
+</div>

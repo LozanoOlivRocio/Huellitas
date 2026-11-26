@@ -1,0 +1,34 @@
+<article class="pet-card card">
+  <a
+    class="pet-photo"
+    [routerLink]="['/mascotas', pet().id]"
+    [attr.aria-label]="'Conocer a ' + pet().nombre"
+    ><img [src]="pet().foto" [alt]="pet().nombre + ', en busca de un hogar'" loading="lazy" /><span
+      class="photo-label"
+      >{{ pet().sexo }} · {{ pet().edad }}</span
+    ></a
+  >
+  <button
+    class="favorite"
+    [class.selected]="store.favorites().includes(pet().id)"
+    (click)="store.favorite(pet().id)"
+    [attr.aria-label]="'Guardar a ' + pet().nombre + ' en favoritos'"
+    [attr.aria-pressed]="store.favorites().includes(pet().id)"
+  >
+    <h-icon name="heart" />
+  </button>
+  <div class="pet-body">
+    <div class="between">
+      <h3>{{ pet().nombre }}</h3>
+      <span class="tag">{{ pet().esterilizado ? 'Esterilizado' : 'Vacunado' }}</span>
+    </div>
+    <p>
+      {{ pet().temperamento }}.
+      {{ pet().historia.split('. ')[1] || 'Busca una familia para compartir su vida.' }}
+    </p>
+    <span class="location"><h-icon name="pin" /> {{ pet().ubicacion }}</span
+    ><a class="btn btn-yellow full" [routerLink]="['/mascotas', pet().id]"
+      >Conoce a {{ pet().nombre }} <h-icon name="paw"
+    /></a>
+  </div>
+</article>

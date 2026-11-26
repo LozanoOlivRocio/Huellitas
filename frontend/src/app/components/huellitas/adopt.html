@@ -1,0 +1,176 @@
+<div class="wrap form-page">
+  @if (pet(); as p) {
+    <a class="back-link" [routerLink]="['/mascotas', p.id]"
+      ><h-icon name="back" /> Volver al perfil de {{ p.nombre }}</a
+    >
+    <div class="content-sidebar">
+      <section class="panel adoption-form">
+        <span class="overline">UN HOGAR, UNA NUEVA HISTORIA</span>
+        <h1>Formulario de adopción</h1>
+        <p class="muted">Cuéntanos sobre ti y el hogar que compartirías con {{ p.nombre }}.</p>
+        @if (!store.user()) {
+          <div class="login-gate">
+            <h-icon name="user" />
+            <h2>Primero, conozcámonos</h2>
+            <p>
+              Crea una cuenta o inicia sesión para enviar tu solicitud y conversar con quien cuida a
+              {{ p.nombre }}.
+            </p>
+            <a
+              class="btn btn-green"
+              routerLink="/login"
+              [queryParams]="{ volver: '/adoptar/' + p.id }"
+              >Iniciar sesión</a
+            ><a
+              class="btn btn-outline"
+              routerLink="/crear-cuenta"
+              [queryParams]="{ volver: '/adoptar/' + p.id }"
+              >Crear cuenta</a
+            >
+          </div>
+        } @else {
+          <form (ngSubmit)="submit()" #form="ngForm">
+            <fieldset>
+              <legend>1. Datos del solicitante</legend>
+              <div class="form-grid">
+                <label
+                  >Nombres<input
+                    class="form-control"
+                    [value]="store.user()!.nombre"
+                    readonly /></label
+                ><label
+                  >Apellidos<input
+                    class="form-control"
+                    [value]="store.user()!.apellidos"
+                    readonly /></label
+                ><label class="span-2"
+                  >Correo electrónico<input
+                    class="form-control"
+                    [value]="store.user()!.email"
+                    readonly /></label
+                ><label
+                  >Teléfono<input
+                    class="form-control"
+                    [value]="store.user()!.telefono"
+                    readonly /></label
+                ><label
+                  >DNI<input class="form-control" [value]="store.user()!.documento" readonly
+                /></label>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend>2. Entorno y hogar</legend>
+              <p class="field-label">Tipo de vivienda *</p>
+              <div class="housing-options">
+                @for (home of homes; track home) {
+                  <label [class.chosen]="data.vivienda === home"
+                    ><input
+                      type="radio"
+                      name="vivienda"
+                      [value]="home"
+                      [(ngModel)]="data.vivienda"
+                      required
+                    />{{ home }}</label
+                  >
+                }
+              </div>
+              <div class="form-grid">
+                <fieldset class="radio-panel">
+                  <legend>¿Tienes otras mascotas?</legend>
+                  <label
+                    ><input
+                      type="radio"
+                      name="mascotas"
+                      [value]="true"
+                      [(ngModel)]="data.otrasMascotas"
+                    />
+                    Sí</label
+                  ><label
+                    ><input
+                      type="radio"
+                      name="mascotas"
+                      [value]="false"
+                      [(ngModel)]="data.otrasMascotas"
+                    />
+                    No</label
+                  >
+                </fieldset>
+                <fieldset class="radio-panel">
+                  <legend>¿Hay niños en casa?</legend>
+                  <label
+                    ><input type="radio" name="ninos" [value]="true" [(ngModel)]="data.ninos" />
+                    Sí</label
+                  ><label
+                    ><input type="radio" name="ninos" [value]="false" [(ngModel)]="data.ninos" />
+                    No</label
+                  >
+                </fieldset>
+              </div>
+              <label class="checkbox-label"
+                ><input type="checkbox" name="acuerdo" [(ngModel)]="agreement" required /> Todas las
+                personas de mi hogar están de acuerdo con la adopción.</label
+              >
+            </fieldset>
+            <fieldset>
+              <legend>3. Tu motivación</legend>
+              <label
+                >¿Por qué deseas adoptar a {{ p.nombre }}? *<textarea
+                  class="form-control"
+                  name="motivacion"
+                  [(ngModel)]="data.motivacion"
+                  required
+                  minlength="30"
+                  maxlength="2000"
+                  rows="5"
+                  placeholder="Cuéntanos sobre tu rutina, el tiempo que compartirían y cómo cuidarías de tu nuevo compañero…"
+                ></textarea></label
+              ><small>{{ data.motivacion.length }} / 2000 caracteres · mínimo 30</small
+              ><label class="checkbox-label"
+                ><input type="checkbox" name="compromiso" [(ngModel)]="accepted" required /> Me
+                comprometo a su cuidado responsable y seguimiento veterinario.</label
+              >
+            </fieldset>
+            @if (error()) {
+              <p class="alert error" role="alert">{{ error() }}</p>
+            }
+            <div class="form-actions">
+              <button
+                type="submit"
+                class="btn btn-green"
+                [disabled]="form.invalid || p.estado !== 'disponible' || busy()"
+              >
+                Enviar solicitud de adopción</button
+              ><a class="btn btn-outline" [routerLink]="['/mascotas', p.id]">Volver sin enviar</a>
+            </div>
+            <p class="demo-note">Tu solicitud quedará pendiente de revisión por el publicador.</p>
+          </form>
+        }
+      </section>
+      <aside>
+        <section class="panel">
+          <div class="mini-pet">
+            <img [src]="p.foto" [alt]="p.nombre" />
+            <div>
+              <h2>{{ p.nombre }}</h2>
+              <span class="tag">{{
+                p.estado === 'disponible' ? 'En adopción' : 'No disponible'
+              }}</span>
+              <p>{{ p.especie }} · {{ p.edad }}</p>
+            </div>
+          </div>
+          <hr />
+          <h3>Antes de dar el paso</h3>
+          <ul class="check-list">
+            <li><h-icon name="check" /> Conversa sobre sus cuidados</li>
+            <li><h-icon name="check" /> Prepara un espacio seguro</li>
+            <li><h-icon name="check" /> Considera el tiempo y los gastos</li>
+            <li><h-icon name="check" /> Involucra a toda tu familia</li>
+          </ul>
+        </section>
+      </aside>
+    </div>
+  } @else {
+    <h1>Mascota no encontrada</h1>
+    <a routerLink="/">Volver al inicio</a>
+  }
+</div>

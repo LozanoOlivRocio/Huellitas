@@ -1,0 +1,173 @@
+<section class="auth-page wrap">
+  <a routerLink="/" class="back-link"><h-icon name="back" /> Volver al inicio</a>
+  <div class="page-intro">
+    <span class="eyebrow light">ÚNETE A LA COMUNIDAD DE ADOPCIÓN</span>
+    <h1>{{ register ? 'Crear cuenta' : 'Qué bueno verte de nuevo' }}</h1>
+    <p>
+      {{
+        register
+          ? 'Conecta con rescatistas y encuentra a tu compañero de vida.'
+          : 'Inicia sesión y sigue escribiendo una historia con huellitas.'
+      }}
+    </p>
+  </div>
+  <div class="auth-layout">
+    <aside class="auth-story">
+      <span class="eyebrow"><h-icon name="heart" /> ADOPTA, NO COMPRES</span>
+      <h2>Salvar una vida cambiará<br />el mundo entero<br />para esa mascota.</h2>
+      <p>
+        Cientos de compañeros esperan una familia amorosa. El primer paso de su nueva vida puede
+        empezar contigo.
+      </p>
+      <ul class="check-list">
+        <li><h-icon name="check" /> Contacto directo con quienes los cuidan</li>
+        <li><h-icon name="check" /> Sigue tus solicitudes en un solo lugar</li>
+        <li><h-icon name="check" /> Publica y comparte historias de rescate</li>
+      </ul>
+      <img
+        src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=700&q=85"
+        alt="Dos perros compartiendo un paseo"
+      />
+      <div class="story-caption"><h-icon name="paw" /> Más que una mascota. Un nuevo comienzo.</div>
+    </aside>
+    <form class="auth-form" (ngSubmit)="submit()" #form="ngForm">
+      <h2>{{ register ? 'Tu nueva historia empieza aquí' : 'Inicia sesión' }}</h2>
+      <p class="muted">
+        {{
+          register
+            ? 'Completa tus datos para unirte a Huellitas.'
+            : 'Ingresa con tu cuenta de Huellitas.'
+        }}
+      </p>
+      <div class="form-grid">
+        @if (register) {
+          <label
+            >Nombres <span>*</span
+            ><input
+              class="form-control"
+              name="nombre"
+              [(ngModel)]="data.nombre"
+              required
+              minlength="2"
+              maxlength="100"
+              autocomplete="given-name"
+              placeholder="Ej. Carmen" /></label
+          ><label
+            >Apellidos <span>*</span
+            ><input
+              class="form-control"
+              name="apellidos"
+              [(ngModel)]="data.apellidos"
+              required
+              minlength="2"
+              maxlength="100"
+              autocomplete="family-name"
+              placeholder="Ej. Méndez Torres"
+          /></label>
+        }
+        <label class="span-2"
+          >Correo electrónico <span>*</span
+          ><input
+            class="form-control"
+            type="email"
+            name="email"
+            [(ngModel)]="data.email"
+            required
+            email
+            maxlength="254"
+            autocomplete="email"
+            placeholder="tucorreo@ejemplo.com"
+        /></label>
+        @if (register) {
+          <label
+            >Teléfono <span>*</span
+            ><input
+              class="form-control"
+              type="tel"
+              name="telefono"
+              [(ngModel)]="data.telefono"
+              required
+              pattern="[+0-9 ()-]{7,20}"
+              autocomplete="tel"
+              placeholder="+51 987 654 321" /></label
+          ><label
+            >DNI <span>*</span
+            ><input
+              class="form-control"
+              name="documento"
+              [(ngModel)]="data.documento"
+              required
+              pattern="[0-9]{8}"
+              maxlength="8"
+              inputmode="numeric"
+              placeholder="8 dígitos" /></label
+          ><label class="span-2"
+            >Ubicación <span>*</span
+            ><input
+              class="form-control"
+              name="ubicacion"
+              [(ngModel)]="data.ubicacion"
+              required
+              maxlength="200"
+              autocomplete="address-level2"
+              placeholder="Ej. Huancayo, Junín"
+          /></label>
+        }
+        <label [class.span-2]="!register"
+          >Contraseña <span>*</span>
+          <div class="password-field">
+            <input
+              class="form-control"
+              [type]="show() ? 'text' : 'password'"
+              name="password"
+              [(ngModel)]="password"
+              required
+              minlength="8"
+              maxlength="128"
+              [autocomplete]="register ? 'new-password' : 'current-password'"
+              placeholder="Mínimo 8 caracteres"
+            /><button
+              type="button"
+              (click)="show.set(!show())"
+              [attr.aria-label]="show() ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+            >
+              {{ show() ? 'Ocultar' : 'Ver' }}
+            </button>
+          </div></label
+        >
+        @if (register) {
+          <label
+            >Confirmar contraseña <span>*</span
+            ><input
+              class="form-control"
+              [type]="show() ? 'text' : 'password'"
+              name="confirm"
+              [(ngModel)]="confirmation"
+              required
+              autocomplete="new-password"
+              placeholder="Repite tu contraseña"
+          /></label>
+        }
+      </div>
+      @if (register) {
+        <label class="checkbox-label"
+          ><input type="checkbox" name="accepted" [(ngModel)]="accepted" required /> Me comprometo
+          con la adopción responsable y el cuidado de los animales.</label
+        >
+      }
+      @if (error()) {
+        <p role="alert" class="alert error">{{ error() }}</p>
+      }
+      <button class="btn btn-yellow full" type="submit" [disabled]="form.invalid || busy()">
+        {{ busy() ? 'Un momento…' : register ? 'Crear mi cuenta' : 'Iniciar sesión' }}
+        <h-icon name="paw" />
+      </button>
+      <p class="auth-switch">
+        {{ register ? '¿Ya tienes una cuenta?' : '¿Aún no formas parte?' }}
+        <a [routerLink]="register ? '/login' : '/crear-cuenta'">{{
+          register ? 'Inicia sesión aquí' : 'Crea tu cuenta'
+        }}</a>
+      </p>
+    </form>
+  </div>
+</section>

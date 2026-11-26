@@ -1,0 +1,133 @@
+HUELLITAS - INSTRUCCIONES PARA EJECUTAR EL PROYECTO
+================================================
+
+1. ESTADO INICIAL
+
+La aplicación utiliza Angular, Bootstrap, FastAPI y SQL Server.
+La base Huellitas se entrega vacía: sin usuarios, mascotas, fotos,
+solicitudes, mensajes, sesiones ni favoritos.
+No existen cuentas predeterminadas ni se cargan datos de ejemplo.
+El primer usuario se crea desde la pantalla Crear cuenta.
+
+2. REQUISITOS
+
+- Windows con SQL Server instalado. En este equipo: instancia SQLEXPRESS.
+- Microsoft ODBC Driver 18 for SQL Server de 64 bits.
+- Node.js LTS y npm.
+- uv para administrar Python y las dependencias del backend.
+- SSMS 22 para consultar la base de datos (opcional para abrir la web).
+
+En este equipo ya se prepararon los requisitos. El iniciador también detecta
+el Node portátil de %LOCALAPPDATA%\Huellitas\tools si no está en el PATH.
+No borres las carpetas frontend\node_modules ni backend\.venv si deseas
+seguir ejecutándolo sin reinstalar las dependencias.
+
+3. CONFIGURAR LA CONEXIÓN
+
+Archivo: backend\.env
+
+Si no existe, el iniciador copia backend\.env.example automáticamente.
+La configuración local es:
+
+SQLSERVER_CONNECTION_STRING=DRIVER={ODBC Driver 18 for SQL Server};SERVER=localhost\SQLEXPRESS;DATABASE=Huellitas;Trusted_Connection=yes;Encrypt=yes;TrustServerCertificate=yes;
+ALLOWED_ORIGINS=["http://localhost:4200","http://127.0.0.1:4200","http://localhost:4000","http://127.0.0.1:4000"]
+COOKIE_SECURE=false
+SESSION_DAYS=7
+
+Trusted_Connection=yes usa el usuario de Windows que ejecuta la aplicación.
+No requiere una contraseña de SQL Server. Ese usuario debe tener acceso
+a la base. La preparación inicial necesita permisos para crear bases y tablas.
+TrustServerCertificate=yes corresponde a esta instalación local de desarrollo.
+El archivo .env está excluido de Git. Reinicia el backend si lo modificas.
+
+4. INICIAR TODA LA APLICACIÓN
+
+Abre una terminal en la carpeta principal del proyecto y ejecuta:
+
+    .\start.cmd
+
+También puedes abrir start.cmd desde el Explorador de archivos.
+Mantén abierta la ventana mientras uses la web.
+
+El iniciador prepara las dependencias de Python, verifica las bases de SQL
+Server, aplica únicamente las migraciones pendientes e inicia la API y Angular.
+Si faltan las dependencias del frontend, las instala con npm ci.
+No carga usuarios ni mascotas, y no borra datos al arrancar.
+
+Abre en el navegador:
+
+    http://127.0.0.1:4200/
+
+API y documentación:
+
+    http://127.0.0.1:8000/docs
+
+Comprobación de conexión:
+
+    http://127.0.0.1:8000/api/health
+
+Debe devolver: {"status":"ok","database":"sqlserver"}
+Usa siempre el mismo hostname durante una sesión: localhost y 127.0.0.1
+son hosts diferentes y sus cookies no se comparten.
+
+5. PRIMER USO
+
+a) Entra en Crear cuenta y registra tu usuario.
+b) Usa Poner en adopción para publicar una mascota y sus fotografías.
+c) Para probar una solicitud, crea otra cuenta y solicita esa mascota.
+d) Vuelve a la cuenta publicadora para revisar, aceptar o rechazar la solicitud.
+e) Ambas partes pueden conversar desde Mensajes.
+
+No hay administrador: cualquier cuenta puede publicar y solicitar mascotas.
+Las solicitudes y el chat solo son visibles para sus participantes.
+
+6. CONSULTAR LA BASE EN SSMS 22
+
+Servidor: localhost\SQLEXPRESS
+Autenticación: Autenticación de Windows
+Cifrar: Obligatorio
+Para esta instalación local: confiar en el certificado del servidor.
+
+Actualiza Bases de datos, expande Huellitas y luego Tablas.
+Las tablas están bajo el esquema adopcion.
+Puedes abrir database\sqlserver\consultas.sql y ejecutarlo para consultar datos.
+
+7. DETENER
+
+Pulsa Ctrl+C en la ventana donde ejecutaste start.cmd.
+Se detienen la web y la API iniciadas por esa ventana.
+El servicio de SQL Server mantiene los datos guardados.
+
+8. SI NO ABRE
+
+- Ejecuta start.cmd y revisa el mensaje que aparece; no cierres la ventana.
+- Comprueba que SQL Server (SQLEXPRESS) esté iniciado en Servicios de Windows.
+- Comprueba que puedas conectarte desde SSMS con tu usuario de Windows.
+- Revisa servidor y base de datos en backend\.env.
+- Si aparece que un puerto está ocupado, cierra el otro iniciador de Huellitas
+  antes de volver a ejecutar start.cmd.
+- Si faltan paquetes del frontend, ejecuta npm ci desde frontend.
+- Si faltan paquetes del backend, ejecuta uv sync --python 3.13 desde backend.
+
+9. PRUEBAS Y COMPILACIÓN
+
+Desde backend:
+
+    uv run pytest -q
+
+Las pruebas usan exclusivamente Huellitas_test. Esa base es independiente
+de Huellitas y puede contener datos ficticios después de ejecutar pruebas.
+
+Con la aplicación iniciada, desde backend:
+
+    uv run python tests/smoke_live.py
+
+El recorrido HTTP usa datos temporales y elimina solo los creados por esa prueba.
+
+Desde frontend, con Node y npm en el PATH:
+
+    npm test -- --watch=false
+    npm run build
+
+Las carpetas dist, .angular, __pycache__ y .pytest_cache son generadas.
+Pueden volver a aparecer al ejecutar o comprobar el proyecto.

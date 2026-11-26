@@ -1,0 +1,739 @@
+/* Mayor especificidad para adaptar las reglas base sin usar !important. */
+@media (max-width: 1150px) {
+  body .wrap {
+    width: calc(100% - 48px);
+  }
+  body .desktop-nav {
+    gap: 15px;
+  }
+  body .header-inner {
+    gap: 18px;
+  }
+  body .desktop-nav a {
+    font-size: 0.8rem;
+  }
+  body .header-actions {
+    gap: 9px;
+  }
+  body .hero-copy {
+    padding: 35px 0 30px 30px;
+  }
+  body .hero-visual {
+    padding: 35px 20px 35px 30px;
+  }
+  body .hero h1 {
+    font-size: 2.4rem;
+  }
+  body .pet-photo {
+    height: 200px;
+  }
+  body .pet-grid {
+    gap: 18px;
+  }
+  body .pet-body {
+    padding: 17px;
+  }
+  body .content-sidebar {
+    gap: 20px;
+    grid-template-columns: minmax(0, 1.8fr) minmax(260px, 1fr);
+  }
+  body .auth-form,
+  body .auth-story {
+    padding: 30px;
+  }
+  body .chat-layout {
+    grid-template-columns: 260px minmax(0, 1fr);
+  }
+}
+@media (max-width: 960px) {
+  body .desktop-nav {
+    display: none;
+  }
+  body .menu-toggle {
+    display: grid;
+    place-items: center;
+  }
+  body .hero h1 {
+    font-size: 2rem;
+  }
+  body .hero-visual > img {
+    height: 320px;
+  }
+  body .hero-sticker {
+    left: 5px;
+    padding: 10px 14px;
+    font-size: 0.75rem;
+    bottom: 55px;
+  }
+  body .hero-sticker h-icon {
+    font-size: 1.4rem;
+  }
+  body .hero {
+    min-height: 430px;
+  }
+  body .hero-copy {
+    padding: 30px 0 25px 25px;
+  }
+  body .hero-doodle {
+    font-size: 4rem;
+  }
+  body .search-box {
+    flex-wrap: wrap;
+    padding: 9px;
+  }
+  body .search-box input {
+    width: calc(100% - 40px);
+    flex: 1;
+  }
+  body .search-box .btn {
+    width: 100%;
+  }
+  body .pet-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  body .species-heading > span {
+    display: none;
+  }
+  body .home-callout {
+    gap: 17px;
+    padding: 25px;
+  }
+  body .home-callout h2 {
+    font-size: 1.1rem;
+  }
+  body .callout-icon {
+    width: 45px;
+    height: 45px;
+    font-size: 1.3rem;
+  }
+  body .auth-story h2 {
+    font-size: 1.35rem;
+  }
+  body .auth-layout {
+    grid-template-columns: 0.8fr 1.2fr;
+  }
+  body .auth-form .form-grid {
+    grid-template-columns: 1fr;
+  }
+  body .auth-form .span-2 {
+    grid-column: auto;
+  }
+  body .content-sidebar {
+    grid-template-columns: minmax(0, 1fr) 270px;
+  }
+  body .panel {
+    padding: 23px;
+  }
+  body .pet-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  body .pet-gallery {
+    grid-template-columns: 1.8fr 1fr;
+  }
+  body .main-photo > img {
+    height: 350px;
+  }
+  body .gallery-side img {
+    max-height: 165px;
+  }
+  body .housing-options {
+    grid-template-columns: 1fr;
+  }
+  body .housing-options label {
+    padding: 12px;
+  }
+  body .adoption-form .form-grid {
+    grid-template-columns: 1fr;
+  }
+  body .account-layout {
+    grid-template-columns: minmax(0, 1.7fr) minmax(230px, 1fr);
+    gap: 20px;
+  }
+  body .account-pet {
+    flex-wrap: wrap;
+  }
+  body .account-pet > .btn {
+    margin-left: 118px;
+  }
+  body .publish-top {
+    grid-template-columns: 0.85fr 1.15fr;
+  }
+  body .publish-top .form-grid {
+    grid-template-columns: 1fr;
+  }
+  body .publish-top .span-2 {
+    grid-column: auto;
+  }
+  body .trust-row {
+    gap: 30px;
+    font-size: 0.75rem;
+  }
+}
+@media (max-width: 700px) {
+  body .wrap {
+    width: calc(100% - 36px);
+  }
+  body .header-inner {
+    min-height: 72px;
+    gap: 8px;
+  }
+  body .brand {
+    font-size: 1.15rem;
+    gap: 8px;
+  }
+  body .brand-mark {
+    width: 37px;
+    height: 37px;
+    border-radius: 12px;
+  }
+  body .brand-mark h-icon {
+    font-size: 1.25rem;
+  }
+  body .brand-sub {
+    font-size: 0.45rem;
+  }
+  body .header-actions {
+    gap: 5px;
+  }
+  body .publish-header,
+  body .login-header,
+  body .profile-link > span:not(.avatar) {
+    display: none !important;
+  }
+  body .profile-link .avatar {
+    width: 31px;
+    height: 31px;
+    font-size: 0.75rem;
+  }
+  body .chat-header-link {
+    width: 31px;
+  }
+  body .menu-toggle {
+    font-size: 1.2rem;
+    padding: 8px 0 8px 7px;
+  }
+  body .logout-button {
+    padding: 5px;
+    font-size: 0.875rem;
+  }
+  body .home-page {
+    padding-top: 19px;
+  }
+  body .hero {
+    grid-template-columns: 1fr;
+    min-height: 0;
+    border-radius: 21px;
+  }
+  body .hero-copy {
+    padding: 28px 24px 0;
+  }
+  body .hero h1 {
+    font-size: clamp(1.9rem, 7vw, 2.7rem);
+    line-height: 1.2;
+    margin: 18px 0;
+  }
+  body .hero-copy > p {
+    font-size: 1rem;
+    max-width: none;
+  }
+  body .hero-copy p.hero-sub {
+    font-size: 0.875rem;
+    margin-bottom: 18px;
+  }
+  body .hero-visual {
+    padding: 28px 35px 30px;
+    max-width: 420px;
+    width: 100%;
+    margin: auto;
+  }
+  body .hero-visual > img {
+    height: 270px;
+    border-radius: 140px 140px 20px 20px;
+    object-position: center 37%;
+    border-width: 5px;
+  }
+  body .hero-sticker {
+    left: 20px;
+    bottom: 22px;
+    font-size: 0.8rem;
+    padding: 12px 17px;
+  }
+  body .hero-doodle {
+    right: 15px;
+    top: 0;
+    font-size: 3.5rem;
+  }
+  body .search-box {
+    flex-wrap: wrap;
+    padding: 7px;
+    gap: 5px;
+  }
+  body .search-box input {
+    font-size: 0.875rem;
+    width: auto;
+  }
+  body .search-box .btn {
+    width: 100%;
+    padding: 10px;
+    font-size: 0.875rem;
+  }
+  body .hero-note {
+    font-size: 0.75rem;
+    margin-top: 13px;
+  }
+  body .trust-row {
+    padding: 21px 0;
+    gap: 15px;
+    flex-wrap: wrap;
+    font-size: 0.75rem;
+  }
+  body .trust-row span {
+    gap: 5px;
+  }
+  body .trust-row span:last-child {
+    display: none;
+  }
+  body .catalog {
+    padding-top: 30px;
+  }
+  body .catalog-title {
+    align-items: flex-start;
+    gap: 15px;
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
+  body .catalog-title h2 {
+    font-size: 1.4rem;
+    max-width: 310px;
+  }
+  body .catalog-tools {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 13px;
+    padding-bottom: 18px;
+  }
+  body .tabs {
+    gap: 6px;
+  }
+  body .tabs button {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+  }
+  body .species-section {
+    margin-top: 25px;
+  }
+  body .species-heading {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 7px;
+  }
+  body .species-heading h2 {
+    font-size: 1.1rem;
+  }
+  body .species-heading p {
+    font-size: 0.8rem;
+    line-height: 1.6;
+  }
+  body .pet-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  body .pet-photo {
+    height: 240px;
+  }
+  body .pet-body {
+    padding: 20px;
+  }
+  body .pet-body h3 {
+    font-size: 1.2rem;
+  }
+  body .pet-body > p {
+    font-size: 0.875rem;
+    min-height: 0;
+  }
+  body .pet-body .btn {
+    min-height: 44px;
+    font-size: 0.875rem;
+  }
+  body .favorite {
+    width: 38px;
+    height: 38px;
+  }
+  body .home-callout {
+    margin: 35px 0;
+    flex-wrap: wrap;
+    padding: 24px;
+    gap: 15px;
+  }
+  body .home-callout > div:not(.callout-icon) {
+    flex: 1;
+  }
+  body .home-callout h2 {
+    font-size: 1.15rem;
+  }
+  body .home-callout .btn {
+    width: 100%;
+    margin-left: 0;
+  }
+  body .back-link {
+    margin: 20px 0;
+    font-size: 0.875rem;
+  }
+  body .page-intro {
+    margin: 10px auto 25px;
+  }
+  body .page-intro h1 {
+    font-size: 1.8rem;
+  }
+  body .page-intro p {
+    font-size: 0.875rem;
+  }
+  body .auth-layout {
+    grid-template-columns: 1fr;
+  }
+  body .auth-story {
+    padding: 27px;
+  }
+  body .auth-story h2 {
+    font-size: 1.4rem;
+  }
+  body .auth-story img,
+  body .auth-story .check-list,
+  body .story-caption {
+    display: none;
+  }
+  body .auth-story > .eyebrow {
+    margin-bottom: 15px;
+  }
+  body .auth-story > p {
+    margin-bottom: 0;
+  }
+  body .auth-form {
+    padding: 27px 23px;
+  }
+  body .auth-form .form-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  body .auth-form .span-2 {
+    grid-column: 1/-1;
+  }
+  body .form-grid {
+    gap: 15px;
+  }
+  body .auth-form h2 {
+    font-size: 1.15rem;
+  }
+  body .auth-page {
+    padding-bottom: 25px;
+  }
+  body .content-sidebar {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  body .content-sidebar > aside {
+    position: static;
+    margin-top: 5px;
+  }
+  body .pet-gallery {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  body .main-photo > img {
+    height: 340px;
+    border-radius: 18px;
+  }
+  body .gallery-side {
+    display: flex;
+    gap: 10px;
+    overflow: auto;
+  }
+  body .gallery-side button {
+    min-width: 100px;
+    width: 100px;
+    height: 80px;
+  }
+  body .gallery-side img {
+    height: 80px;
+    width: 100px;
+    object-fit: cover;
+  }
+  body .gallery-message,
+  body .gallery-side:has(button:only-of-type) {
+    display: none;
+  }
+  body .panel {
+    padding: 24px 20px;
+    border-radius: 18px;
+    margin-bottom: 20px;
+  }
+  body .pet-summary h1 {
+    font-size: 2rem;
+  }
+  body .pet-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 7px;
+    padding-top: 17px;
+  }
+  body .pet-stats strong {
+    font-size: 0.875rem;
+  }
+  body .pet-stats > div {
+    padding: 12px 6px;
+    gap: 5px;
+  }
+  body .detail-page .panel h2 {
+    font-size: 1.25rem;
+  }
+  body .health-list {
+    padding: 14px;
+  }
+  body .adoption-form h1 {
+    font-size: 1.7rem;
+  }
+  body .adoption-form .form-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  body .adoption-form fieldset .span-2 {
+    grid-column: 1/-1;
+  }
+  body .adoption-form .form-grid > .radio-panel {
+    grid-column: 1/-1;
+  }
+  body .adoption-form fieldset {
+    margin-top: 25px;
+    padding-top: 24px;
+  }
+  body .adoption-form .radio-panel {
+    padding: 15px;
+  }
+  body .housing-options {
+    grid-template-columns: 1fr;
+  }
+  body .adoption-form .form-actions {
+    flex-direction: column;
+  }
+  body .publish-page > .panel {
+    padding: 25px 20px;
+  }
+  body .publish-page h1 {
+    font-size: 1.65rem;
+  }
+  body .publish-top {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  body .upload-panel,
+  body .basic-info {
+    padding: 20px;
+  }
+  body .upload-zone {
+    min-height: 230px;
+  }
+  body .publish-top .form-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  body .publish-top .span-2 {
+    grid-column: 1/-1;
+  }
+  body .profile-banner {
+    padding: 23px 20px;
+    gap: 13px;
+    flex-wrap: wrap;
+    margin-top: 24px;
+  }
+  body .profile-banner > div:not(.avatar) {
+    flex: 1;
+    min-width: 0;
+  }
+  body .profile-banner h1 {
+    font-size: 1.2rem;
+    overflow-wrap: anywhere;
+  }
+  body .profile-banner p {
+    font-size: 0.8rem;
+    overflow-wrap: anywhere;
+  }
+  body .avatar.large {
+    width: 52px;
+    height: 52px;
+    font-size: 1.1rem;
+  }
+  body .profile-banner .btn {
+    margin-left: 0;
+    width: 100%;
+    margin-top: 7px;
+  }
+  body .account-layout {
+    grid-template-columns: 1fr;
+  }
+  body .account-pet {
+    gap: 12px;
+    padding: 12px;
+  }
+  body .account-pet > img {
+    width: 75px;
+    height: 85px;
+  }
+  body .account-pet > .btn {
+    margin-left: 87px;
+    margin-top: -5px;
+  }
+  body .request-card .between {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  body .messages-page .page-intro h1 {
+    font-size: 1.7rem;
+  }
+  body .request-banner {
+    padding: 20px;
+    gap: 10px;
+  }
+  body .request-banner > h-icon {
+    font-size: 1.2rem;
+  }
+  body .request-banner h2 {
+    font-size: 1.15rem;
+  }
+  body .chat-layout {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+  body .chat-list {
+    padding: 16px;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+    max-height: 240px;
+    overflow: auto;
+  }
+  body .chat-list h2 {
+    font-size: 1rem;
+    padding: 0 0 12px;
+    margin-bottom: 5px;
+  }
+  body .chat-list > a {
+    padding: 10px;
+    margin-bottom: 0;
+  }
+  body .chat-list p {
+    max-width: 240px;
+  }
+  body .chat-list img {
+    width: 38px;
+    height: 38px;
+  }
+  body .chat-header {
+    padding: 17px 15px;
+    gap: 8px;
+  }
+  body .chat-header > .avatar {
+    width: 31px;
+    height: 31px;
+  }
+  body .chat-header h2 {
+    font-size: 0.875rem;
+  }
+  body .chat-header small {
+    font-size: 0.75rem;
+  }
+  body .chat-header > .btn {
+    font-size: 0.75rem;
+    padding: 8px;
+    min-height: 32px;
+  }
+  body .chat-body {
+    padding: 17px 13px;
+    min-height: 330px;
+    max-height: 480px;
+    gap: 15px;
+  }
+  body .bubble {
+    max-width: 94%;
+    padding: 12px 14px;
+  }
+  body .chat-compose {
+    padding: 15px 12px;
+    gap: 7px;
+  }
+  body .chat-compose input {
+    padding: 10px;
+    font-size: 0.875rem;
+  }
+  body .chat-compose .btn {
+    padding: 10px 12px;
+  }
+  body .chat-compose .btn h-icon {
+    display: none;
+  }
+  body .footer-top {
+    padding: 30px 0;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  body .footer-top > .brand {
+    width: 100%;
+  }
+  body .footer-top p {
+    font-size: 0.8rem;
+    flex: 1;
+  }
+  body .footer-top .text-link {
+    font-size: 0.8rem;
+    max-width: 130px;
+  }
+  body .footer-bottom {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+    padding: 20px 0;
+  }
+  body .form-page,
+  body .publish-page {
+    padding-bottom: 20px;
+  }
+}
+@media (max-width: 380px) {
+  body .wrap {
+    width: calc(100% - 28px);
+  }
+  body .hero-copy {
+    padding: 24px 18px 0;
+  }
+  body .hero h1 {
+    font-size: 1.8rem;
+  }
+  body .hero-visual {
+    padding: 25px;
+  }
+  body .hero-visual > img {
+    height: 235px;
+  }
+  body .tabs button {
+    padding: 8px 10px;
+  }
+  body .auth-form .form-grid,
+  body .adoption-form .form-grid,
+  body .publish-top .form-grid {
+    grid-template-columns: 1fr;
+  }
+  body .auth-form .span-2,
+  body .adoption-form fieldset .span-2,
+  body .publish-top .span-2 {
+    grid-column: auto;
+  }
+  body .pet-photo {
+    height: 215px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}

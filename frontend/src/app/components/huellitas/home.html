@@ -1,0 +1,129 @@
+<div class="home-page wrap">
+  <section class="hero">
+    <div class="hero-copy">
+      <span class="eyebrow"><h-icon name="heart" /> ADOPTA, NO COMPRES</span>
+      <h1>Un pequeño encuentro.<br />Una vida <span>para siempre.</span></h1>
+      <p>Salvar una vida no cambiará el mundo, pero cambiará el mundo entero para esa mascota.</p>
+      <p class="hero-sub">Encuentra a tu próximo compañero o ayúdanos a encontrarle un hogar.</p>
+      <form class="search-box" (ngSubmit)="search()">
+        <h-icon name="search" /><input
+          class="form-control"
+          aria-label="Buscar mascotas por nombre, especie o ubicación"
+          name="query"
+          [(ngModel)]="query"
+          placeholder="Busca por nombre, especie o ciudad…"
+        /><button class="btn btn-green" type="submit">Buscar amigos</button>
+      </form>
+      <div class="hero-note">
+        <span class="mini-paws">♥</span> Segundas oportunidades que empiezan en Huancayo.
+      </div>
+    </div>
+    <div class="hero-visual">
+      <img
+        src="https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=900&q=85"
+        alt="Perro dorado esperando conocer a su nueva familia"
+        fetchpriority="high"
+      />
+      <div class="hero-sticker">
+        <h-icon name="paw" /><span
+          >El amor más bonito<br /><strong>tiene cuatro patitas.</strong></span
+        >
+      </div>
+      <span class="hero-doodle">♡</span>
+    </div>
+  </section>
+  <div class="trust-row">
+    <span><h-icon name="heart" /> Adopción responsable</span
+    ><span><h-icon name="chat" /> Contacto directo</span
+    ><span><h-icon name="shield" /> Una comunidad que cuida</span>
+  </div>
+  <section id="catalogo" class="catalog">
+    <div class="catalog-title">
+      <div>
+        <span class="overline">ENCUENTRA A TU COMPAÑERO</span>
+        <h2>Su próximo hogar podría ser el tuyo.</h2>
+      </div>
+      <a routerLink="/publicar" class="text-link">Quiero dar en adopción</a>
+    </div>
+    <div class="catalog-tools">
+      <div class="tabs" aria-label="Filtrar por especie">
+        @for (tab of tabs; track tab.value) {
+          <button [class.active]="category() === tab.value" (click)="category.set(tab.value)">
+            {{ tab.label }}
+          </button>
+        }
+      </div>
+      <label class="favorite-filter"
+        ><input
+          type="checkbox"
+          [ngModel]="onlyFavorites()"
+          (ngModelChange)="onlyFavorites.set($event)"
+        />
+        Mis favoritos</label
+      >
+    </div>
+    @if (term()) {
+      <div class="search-summary" role="status">
+        Resultados para “{{ term() }}”
+        <button class="text-link" (click)="clear()">Limpiar búsqueda</button>
+      </div>
+    }
+    @if (store.pets().length === 0 && !store.loading()) {
+      <section class="empty-state">
+        <h-icon name="paw" />
+        <h2>Una nueva historia empieza aquí</h2>
+        <p>
+          Aún no hay mascotas publicadas. Comparte la historia del primer compañero que busca un
+          hogar.
+        </p>
+        <a routerLink="/publicar" class="btn btn-green">Publicar una mascota</a>
+      </section>
+    } @else {
+      @for (group of groups; track group.value) {
+        @if (category() === 'Todos' || category() === group.value) {
+          <section class="species-section">
+            <div class="species-heading">
+              <h2><h-icon name="paw" /> {{ group.title }}</h2>
+              <p>{{ group.description }}</p>
+              <span>{{ filtered(group.value).length }} esperando un hogar</span>
+            </div>
+            <div class="pet-grid row g-4">
+              @for (
+                pet of filtered(group.value).slice(0, expanded().includes(group.value) ? 999 : 3);
+                track pet.id
+              ) {
+                <h-pet-card class="col-12 col-md-6 col-lg-4" [pet]="pet" />
+              } @empty {
+                <div class="empty-state">
+                  <h-icon name="search" />
+                  <h3>No encontramos compañeros aquí</h3>
+                  <p>Prueba otra búsqueda o explora las demás especies.</p>
+                  <button class="btn btn-outline" (click)="clear()">Ver todas las mascotas</button>
+                </div>
+              }
+            </div>
+            @if (filtered(group.value).length > 3) {
+              <div class="more-row">
+                <button class="btn btn-outline" (click)="toggle(group.value)">
+                  {{
+                    expanded().includes(group.value)
+                      ? 'Ver menos'
+                      : 'Ver más ' + group.title.toLowerCase()
+                  }}
+                </button>
+              </div>
+            }
+          </section>
+        }
+      }
+    }
+  </section>
+  <section class="home-callout">
+    <div class="callout-icon"><h-icon name="heart" /></div>
+    <div>
+      <h2>¿Hay unas patitas buscando hogar?</h2>
+      <p>Publica su historia y ayúdale a encontrar una familia que lo quiera.</p>
+    </div>
+    <a routerLink="/publicar" class="btn btn-green">Poner en adopción</a>
+  </section>
+</div>

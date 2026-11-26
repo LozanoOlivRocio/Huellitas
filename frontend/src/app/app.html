@@ -1,0 +1,88 @@
+<a class="skip-link" href="#main">Saltar al contenido</a>
+<header class="site-header">
+  <div class="header-inner wrap">
+    <a
+      routerLink="/"
+      class="brand navbar-brand"
+      aria-label="Huellitas, inicio"
+      (click)="menu.set(false)"
+      ><span class="brand-mark"><h-icon name="paw" /></span
+      ><span>Huellitas<span class="brand-sub">ADOPCIÓN RESPONSABLE</span></span></a
+    >
+    <nav class="desktop-nav" aria-label="Navegación principal">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+        >Inicio</a
+      ><a routerLink="/" fragment="catalogo">Buscar mascotas</a
+      ><a routerLink="/mi-perfil" routerLinkActive="active">Mis solicitudes</a>
+    </nav>
+    <div class="header-actions">
+      <a class="btn btn-yellow publish-header" routerLink="/publicar"
+        ><h-icon name="plus" /> Poner en adopción</a
+      ><a class="chat-header-link" routerLink="/mensajes" aria-label="Ver mensajes"
+        ><h-icon name="chat"
+      /></a>
+      @if (store.user(); as u) {
+        <a class="profile-link" routerLink="/mi-perfil"
+          ><span class="avatar">{{ u.nombre.charAt(0) }}</span
+          ><span>{{ u.nombre }}</span></a
+        ><button class="logout-button" (click)="logout()" aria-label="Cerrar sesión">
+          <h-icon name="logout" />
+        </button>
+      } @else {
+        <a class="btn btn-outline login-header" routerLink="/login"
+          ><h-icon name="user" /> Inicia sesión</a
+        >
+      }
+      <button
+        class="menu-toggle"
+        (click)="menu.set(!menu())"
+        [attr.aria-expanded]="menu()"
+        aria-controls="mobile-nav"
+        aria-label="Abrir menú"
+      >
+        <h-icon name="menu" />
+      </button>
+    </div>
+  </div>
+  @if (menu()) {
+    <nav id="mobile-nav" class="mobile-nav" aria-label="Navegación móvil" (click)="menu.set(false)">
+      <a routerLink="/">Inicio y catálogo</a><a routerLink="/mi-perfil">Mi perfil y solicitudes</a
+      ><a routerLink="/mensajes">Mensajes</a><a routerLink="/publicar">Poner en adopción</a>
+      @if (!store.user()) {
+        <a routerLink="/login">Iniciar sesión</a><a routerLink="/crear-cuenta">Crear cuenta</a>
+      }
+    </nav>
+  }
+</header>
+@if (store.error()) {
+  <div
+    class="wrap alert alert-danger d-flex align-items-center justify-content-between gap-3"
+    role="alert"
+  >
+    <span>{{ store.error() }}</span>
+    <button class="btn btn-outline" (click)="store.load()">Reintentar</button>
+  </div>
+}
+@if (store.loading()) {
+  <div class="wrap py-4 text-center" role="status">
+    <span class="spinner-border spinner-border-sm text-success me-2" aria-hidden="true"></span
+    >Cargando Huellitas…
+  </div>
+}
+<main id="main" [class.d-none]="store.loading()" [attr.aria-busy]="store.loading()">
+  <router-outlet />
+</main>
+<footer class="site-footer">
+  <div class="wrap footer-top">
+    <a routerLink="/" class="brand"
+      ><span class="brand-mark"><h-icon name="paw" /></span
+      ><span>Huellitas<span class="brand-sub">CONECTANDO VIDAS, UNIENDO HOGARES</span></span></a
+    >
+    <p>Una segunda oportunidad.<br />Una amistad para toda la vida.</p>
+    <a routerLink="/publicar" class="text-link">Ayuda a encontrar un hogar</a>
+  </div>
+  <div class="wrap footer-bottom">
+    <span>© {{ year }} Huellitas · Hecho con cariño en Huancayo, Perú.</span
+    ><span>Adopta con el corazón. Cuida con responsabilidad.</span>
+  </div>
+</footer>

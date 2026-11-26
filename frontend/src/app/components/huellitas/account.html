@@ -1,0 +1,162 @@
+<div class="wrap account-page">
+  @if (store.user(); as u) {
+    <section class="profile-banner">
+      <div class="avatar large">{{ u.nombre.charAt(0) }}{{ u.apellidos.charAt(0) }}</div>
+      <div>
+        <span class="overline">MI COMUNIDAD HUELLITAS</span>
+        <h1>{{ u.nombre }} {{ u.apellidos }}</h1>
+        <p>{{ u.email }} · {{ u.ubicacion }}</p>
+      </div>
+      <a routerLink="/publicar" class="btn btn-green"><h-icon name="plus" /> Poner en adopción</a>
+    </section>
+    <div class="account-layout">
+      <div>
+        <section>
+          <div class="section-heading">
+            <h2>
+              Mis publicaciones <span class="count">{{ published().length }}</span>
+            </h2>
+          </div>
+          <div class="panel">
+            @for (p of published(); track p.id) {
+              <div class="account-pet">
+                <img [src]="p.foto" [alt]="p.nombre" />
+                <div>
+                  <h3>{{ p.nombre }}</h3>
+                  <span class="tag" [class.yellow]="p.estado === 'disponible'">{{
+                    p.estado === 'disponible'
+                      ? 'En adopción'
+                      : p.estado === 'adoptado'
+                        ? 'Adoptado'
+                        : 'Retirado'
+                  }}</span>
+                  <p>{{ p.sexo }} · {{ p.edad }} · {{ p.ubicacion }}</p>
+                  <small>{{ incomingCount(p.id) }} solicitudes pendientes</small>
+                </div>
+                <a class="btn btn-outline" [routerLink]="['/mascotas', p.id]">Ver ficha</a>
+              </div>
+            } @empty {
+              <div class="empty-state compact">
+                <h-icon name="paw" />
+                <h3>Aquí empiezan las segundas oportunidades</h3>
+                <p>Todavía no has publicado mascotas.</p>
+              </div>
+            }
+            <a class="upload-prompt" routerLink="/publicar"
+              ><h-icon name="plus" /> Publicar una mascota que busca hogar</a
+            >
+          </div>
+        </section>
+        <section>
+          <h2>
+            Solicitudes recibidas <span class="count">{{ incoming().length }}</span>
+          </h2>
+          <div class="panel">
+            @for (r of incoming(); track r.id) {
+              <article class="request-card">
+                <div class="between">
+                  <h3>{{ r.nombre }}</h3>
+                  <span class="tag">{{ status(r.estado) }}</span>
+                </div>
+                <p>
+                  Quiere adoptar a <strong>{{ petName(r.petId) }}</strong> ·
+                  {{ r.fecha | date: 'dd/MM/yyyy' }}
+                </p>
+                <p>
+                  <strong>Vivienda:</strong> {{ r.vivienda }} ·
+                  {{ r.otrasMascotas ? 'Con otras mascotas' : 'Sin otras mascotas' }} ·
+                  {{ r.ninos ? 'Con niños' : 'Sin niños' }}
+                </p>
+                <p class="request-motivation">{{ r.motivacion }}</p>
+                <div class="button-row">
+                  <a class="btn btn-outline" [routerLink]="['/mensajes', r.id]">Conversar</a>
+                  @if (r.estado === 'pendiente') {
+                    <button class="btn btn-green" (click)="resolve(r.id, 'aceptada')">
+                      Aceptar solicitud</button
+                    ><button class="btn btn-danger-outline" (click)="resolve(r.id, 'rechazada')">
+                      Rechazar
+                    </button>
+                  }
+                </div>
+              </article>
+            } @empty {
+              <p class="muted">
+                Cuando alguien se interese por tus mascotas, verás su solicitud aquí.
+              </p>
+            }
+          </div>
+        </section>
+        <section>
+          <h2>
+            Mis solicitudes <span class="count">{{ outgoing().length }}</span>
+          </h2>
+          <div class="panel">
+            @for (r of outgoing(); track r.id) {
+              <article class="request-card">
+                <div class="between">
+                  <h3>{{ petName(r.petId) }}</h3>
+                  <span class="tag">{{ status(r.estado) }}</span>
+                </div>
+                <p>Enviada el {{ r.fecha | date: 'dd/MM/yyyy' }}.</p>
+                <div class="button-row">
+                  <a class="btn btn-outline" [routerLink]="['/mensajes', r.id]"
+                    >Ver solicitud y mensajes</a
+                  >
+                  @if (r.estado === 'pendiente' || r.estado === 'aceptada') {
+                    <button class="btn btn-danger-outline" (click)="resolve(r.id, 'cancelada')">
+                      Cancelar solicitud
+                    </button>
+                  }
+                </div>
+              </article>
+            } @empty {
+              <div class="empty-state compact">
+                <h-icon name="heart" />
+                <h3>Tu compañero te está esperando</h3>
+                <p>Explora las mascotas y conoce su historia.</p>
+                <a routerLink="/" class="btn btn-green">Buscar mascotas</a>
+              </div>
+            }
+          </div>
+        </section>
+      </div>
+      <aside>
+        <section class="panel">
+          <h2><h-icon name="chat" /> Tus conversaciones</h2>
+          <p class="muted">Mantén el contacto y coordina cada paso de la adopción.</p>
+          @for (r of conversations().slice(0, 5); track r.id) {
+            <a class="conversation-link" [routerLink]="['/mensajes', r.id]"
+              ><span class="avatar"><h-icon name="chat" /></span>
+              <div>
+                <strong>{{ petName(r.petId) }}</strong
+                ><small>{{ r.mensajes.length }} mensajes · {{ status(r.estado) }}</small>
+              </div></a
+            >
+          } @empty {
+            <p class="muted">Aún no tienes conversaciones.</p>
+          }
+          <a class="btn btn-outline full" routerLink="/mensajes">Ver mensajes</a>
+        </section>
+        <section class="commitment">
+          <h3><h-icon name="heart" /> Adoptar también es acompañar</h3>
+          <p>
+            Responde con paciencia y comparte información clara. Cada conversación acerca una
+            mascota a su hogar.
+          </p>
+        </section>
+      </aside>
+    </div>
+    @if (error()) {
+      <p class="alert error" role="alert">{{ error() }}</p>
+    }
+  } @else {
+    <section class="empty-state">
+      <h-icon name="user" />
+      <h1>Tu espacio en Huellitas</h1>
+      <p>Gestiona tus publicaciones, solicitudes y conversaciones.</p>
+      <a routerLink="/login" [queryParams]="{ volver: '/mi-perfil' }" class="btn btn-green"
+        >Iniciar sesión</a
+      >
+    </section>
+  }
+</div>

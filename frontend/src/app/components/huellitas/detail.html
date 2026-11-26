@@ -1,0 +1,138 @@
+<div class="wrap detail-page">
+  <a routerLink="/" class="back-link"><h-icon name="back" /> Volver a las mascotas</a>
+  @if (pet(); as p) {
+    <div class="breadcrumbs">
+      Inicio / Mascotas / <strong>{{ p.nombre }}</strong>
+    </div>
+    <section class="pet-gallery">
+      <div class="main-photo">
+        <img [src]="selected() || p.foto" [alt]="p.nombre" /><span class="photo-label"
+          ><span class="status-dot"></span>
+          {{
+            p.estado === 'disponible'
+              ? 'En busca de un hogar'
+              : p.estado === 'adoptado'
+                ? 'Ya encontró una familia'
+                : 'Publicación retirada'
+          }}</span
+        >
+      </div>
+      <div class="gallery-side">
+        @for (photo of [p.foto, ...p.fotos]; track $index) {
+          <button
+            (click)="selected.set(photo)"
+            [attr.aria-label]="'Ver foto ' + ($index + 1) + ' de ' + p.nombre"
+          >
+            <img [src]="photo" [alt]="p.nombre + ', fotografía ' + ($index + 1)" />
+          </button>
+        }
+        <div class="gallery-message">
+          <h-icon name="heart" />
+          <p>Una segunda oportunidad.<br /><strong>Toda una vida de cariño.</strong></p>
+        </div>
+      </div>
+    </section>
+    <div class="content-sidebar">
+      <div>
+        <section class="panel pet-summary">
+          <div class="between">
+            <div>
+              <span class="overline">CONOCE A TU PRÓXIMO COMPAÑERO</span>
+              <h1>
+                {{ p.nombre }} <span class="verified"><h-icon name="paw" /></span>
+              </h1>
+              <p>{{ p.temperamento }} · {{ p.ubicacion }}</p>
+            </div>
+            <button
+              class="btn icon-button"
+              [class.selected]="store.favorites().includes(p.id)"
+              (click)="store.favorite(p.id)"
+              aria-label="Guardar en favoritos"
+              [attr.aria-pressed]="store.favorites().includes(p.id)"
+            >
+              <h-icon name="heart" />
+            </button>
+          </div>
+          <div class="pet-stats">
+            <div>
+              <span>SEXO</span><strong>{{ p.sexo }}</strong>
+            </div>
+            <div>
+              <span>EDAD APROX.</span><strong>{{ p.edad }}</strong>
+            </div>
+            <div>
+              <span>TAMAÑO</span><strong>{{ p.tamano }}</strong>
+            </div>
+            <div>
+              <span>ESPECIE</span><strong>{{ p.especie }}</strong>
+            </div>
+          </div>
+        </section>
+        <section class="panel">
+          <h2><h-icon name="book" /> Su historia</h2>
+          <p class="story-text">{{ p.historia }}</p>
+          <div class="tag-list">
+            <span class="tag">{{ p.temperamento }}</span
+            ><span class="tag">Adopción responsable</span>
+          </div>
+        </section>
+        <section class="panel">
+          <h2><h-icon name="shield" /> Salud y cuidados</h2>
+          <p class="muted">
+            Información declarada por la persona que publica. Confirma los detalles y su cartilla
+            veterinaria antes de adoptar.
+          </p>
+          <ul class="health-list">
+            <li>
+              <h-icon name="check" /> Vacunas:
+              <strong>{{ p.vacunado ? 'Al día' : 'Por confirmar' }}</strong>
+            </li>
+            <li>
+              <h-icon name="check" /> Desparasitación:
+              <strong>{{ p.desparasitado ? 'Realizada' : 'Por confirmar' }}</strong>
+            </li>
+            <li>
+              <h-icon name="check" /> Esterilización:
+              <strong>{{ p.esterilizado ? 'Realizada' : 'Por confirmar' }}</strong>
+            </li>
+          </ul>
+        </section>
+      </div>
+      <aside>
+        <section class="panel adoption-aside">
+          <div class="shelter-avatar"><h-icon name="paw" /></div>
+          <span class="overline">PUBLICADO POR</span>
+          <h2>
+            {{ p.owner === store.user()?.id ? 'Tu publicación' : p.publicador }}
+          </h2>
+          <p class="location"><h-icon name="pin" /> {{ p.ubicacion }}</p>
+          <hr />
+          <h3>Su nueva vida puede empezar contigo.</h3>
+          <p>Conoce su historia, cuéntanos sobre tu hogar y da el primer paso.</p>
+          @if (p.estado === 'disponible' && p.owner !== store.user()?.id) {
+            <a class="btn btn-green full" [routerLink]="['/adoptar', p.id]"
+              ><h-icon name="heart" /> Quiero adoptar a {{ p.nombre }}</a
+            >
+          } @else {
+            <a class="btn btn-outline full" routerLink="/mi-perfil">{{
+              p.owner === store.user()?.id ? 'Gestionar mi publicación' : 'Ver mis solicitudes'
+            }}</a>
+          }
+          <small>Enviar una solicitud no confirma la adopción.</small>
+        </section>
+        <section class="commitment">
+          <h3><h-icon name="shield" /> Compromiso Huellitas</h3>
+          <p>
+            Adoptar es una decisión para toda la vida. Dedica tiempo a conocer a tu compañero y
+            prepara su bienvenida.
+          </p>
+        </section>
+      </aside>
+    </div>
+  } @else {
+    <section class="empty-state">
+      <h1>No encontramos esta mascota</h1>
+      <a routerLink="/" class="btn btn-green">Volver al catálogo</a>
+    </section>
+  }
+</div>

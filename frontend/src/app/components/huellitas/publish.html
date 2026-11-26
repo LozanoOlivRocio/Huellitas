@@ -1,0 +1,175 @@
+<div class="wrap publish-page">
+  <a routerLink="/mi-perfil" class="back-link"><h-icon name="back" /> Volver a mi perfil</a>
+  <section class="panel">
+    <span class="overline">AYÚDALE A ENCONTRAR SU HOGAR</span>
+    <h1>Una historia que merece ser contada.</h1>
+    <p class="muted">Completa la ficha de tu rescatado y preséntalo a su futura familia.</p>
+    @if (!store.user()) {
+      <div class="login-gate">
+        <h-icon name="paw" />
+        <h2>Comparte su historia con la comunidad</h2>
+        <p>Inicia sesión para publicar una mascota y gestionar sus solicitudes.</p>
+        <a routerLink="/login" [queryParams]="{ volver: '/publicar' }" class="btn btn-green"
+          >Iniciar sesión</a
+        ><a
+          routerLink="/crear-cuenta"
+          [queryParams]="{ volver: '/publicar' }"
+          class="btn btn-outline"
+          >Crear cuenta</a
+        >
+      </div>
+    } @else {
+      <form (ngSubmit)="submit()" #form="ngForm">
+        <div class="publish-top">
+          <section class="upload-panel">
+            <h3><h-icon name="camera" /> Fotografías</h3>
+            <p class="muted">Una foto clara ayuda a conocerlo mejor.</p>
+            <label class="upload-zone">
+              @if (photo()) {
+                <img [src]="photo()" alt="Vista previa de la foto principal" />
+              } @else {
+                <h-icon name="plus" /><strong>Subir foto principal *</strong
+                ><small>JPG, PNG o WEBP · hasta 2 MB</small>
+              }
+              <input
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                (change)="upload($event, false)"
+                aria-label="Subir fotografía principal" /></label
+            ><label class="text-link upload-extra"
+              >Agregar fotos adicionales (máx. 4)<input
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                multiple
+                (change)="upload($event, true)"
+            /></label>
+            <div class="upload-thumbs">
+              @for (img of photos(); track $index) {
+                <div>
+                  <img [src]="img" alt="Foto adicional" /><button
+                    type="button"
+                    (click)="remove($index)"
+                    aria-label="Eliminar fotografía adicional"
+                  >
+                    ×
+                  </button>
+                </div>
+              }
+            </div>
+          </section>
+          <section class="basic-info">
+            <h3>Descripción básica</h3>
+            <div class="form-grid">
+              <label class="span-2"
+                >Nombre del animalito *<input
+                  class="form-control"
+                  name="nombre"
+                  [(ngModel)]="data.nombre"
+                  required
+                  minlength="2"
+                  maxlength="100"
+                  placeholder="Ej. Milo, Luna, Canelo…" /></label
+              ><label
+                >Especie *<select
+                  class="form-select"
+                  name="especie"
+                  [(ngModel)]="data.especie"
+                  required
+                >
+                  <option>Perro</option>
+                  <option>Gato</option>
+                  <option value="Otro">Otro animal</option>
+                </select></label
+              ><label
+                >Sexo *<select class="form-select" name="sexo" [(ngModel)]="data.sexo">
+                  <option>Macho</option>
+                  <option>Hembra</option>
+                  <option>Desconocido</option>
+                </select></label
+              ><label
+                >Edad aproximada *<input
+                  class="form-control"
+                  name="edad"
+                  [(ngModel)]="data.edad"
+                  required
+                  maxlength="40"
+                  placeholder="Ej. 8 meses, 2 años" /></label
+              ><label
+                >Tamaño estimado *<select
+                  class="form-select"
+                  name="tamano"
+                  [(ngModel)]="data.tamano"
+                >
+                  <option>Pequeño</option>
+                  <option>Mediano</option>
+                  <option>Grande</option>
+                </select></label
+              ><label class="span-2"
+                >Temperamento y personalidad *<input
+                  class="form-control"
+                  name="temperamento"
+                  [(ngModel)]="data.temperamento"
+                  required
+                  maxlength="200"
+                  placeholder="Ej. Juguetón, sociable, tranquilo…" /></label
+              ><label class="span-2"
+                >Ubicación *<input
+                  class="form-control"
+                  name="ubicacion"
+                  [(ngModel)]="data.ubicacion"
+                  required
+                  maxlength="200"
+                  placeholder="Distrito y provincia"
+              /></label>
+            </div>
+          </section>
+        </div>
+        <fieldset>
+          <legend>Su historia y cuidados</legend>
+          <label
+            >¿Cómo es y qué necesita para ser feliz? *<textarea
+              class="form-control"
+              name="historia"
+              [(ngModel)]="data.historia"
+              required
+              minlength="50"
+              maxlength="4000"
+              rows="5"
+              placeholder="Cuéntanos cómo llegó a ti, sus hábitos y los cuidados que necesita. Mínimo 50 caracteres."
+            ></textarea></label
+          ><small>{{ data.historia.length }} / 4000 caracteres</small>
+        </fieldset>
+        <fieldset class="health-options">
+          <legend>Información de salud</legend>
+          <p class="muted">Marca únicamente los cuidados que puedes confirmar.</p>
+          <label class="checkbox-label"
+            ><input type="checkbox" name="vacunado" [(ngModel)]="data.vacunado" /> Vacunas al
+            día</label
+          ><label class="checkbox-label"
+            ><input type="checkbox" name="desparasitado" [(ngModel)]="data.desparasitado" />
+            Desparasitado</label
+          ><label class="checkbox-label"
+            ><input type="checkbox" name="esterilizado" [(ngModel)]="data.esterilizado" />
+            Esterilizado</label
+          >
+        </fieldset>
+        <label class="checkbox-label"
+          ><input type="checkbox" name="responsable" [(ngModel)]="accepted" required /> Confirmo que
+          la información es correcta y me comprometo con una adopción responsable.</label
+        >
+        @if (error()) {
+          <p class="alert error" role="alert">{{ error() }}</p>
+        }
+        <div class="form-actions">
+          <button
+            class="btn btn-green"
+            [disabled]="form.invalid || !photo() || uploading() || busy()"
+            type="submit"
+          >
+            {{ uploading() ? 'Procesando fotografías…' : 'Publicar mascota' }}
+          </button>
+        </div>
+      </form>
+    }
+  </section>
+</div>
